@@ -1,0 +1,385 @@
+1. AWS > Cloud 사용
+              > OS > Linux 수업 
+
+- C:\code\linux 폴더 생성
+
+----------------------------------------------------------
+
+Linux
+
+- 오픈 소스 기반으로 만들어진 유닉스 계열 운영체제
+- 리누스 토발즈(1991년) > 리눅스 운영체제 개발
+
+
+리눅스 배포판
+- 커널 자체만으로는 편의성과 기능이 부족
+- 커널 + 여러가지 프로그램 패킹 > 제공하는 것을 배포판
+
+1. 데비안(Debian) 계열
+    - 우분투(Ubuntu), 리눅스 민트(Linux Mint), 칼리 리눅스(Kali Linux)
+
+2. 레드햇(Red Hat) 계열
+    - 레드햇 엔터프라이즈 리눅스(RHEL), CentOS
+
+3. 슬랙웨어(Slackware) 계열
+    - 슬랙웨어, SuSE/openSuSE
+
+4. 안드로이드 계열
+
+
+----------------------------------------------------------
+
+Ubuntu 실습 방법
+
+1. PC에 직접 설치
+2. 가상 머신(VirtualBox, VMWare)에 설치
+3. 도커
+4. WSL2(Windows Subsystem for Linux)
+5. 클라우드 서버(AWS, Azure, Google Cloud) > 설치
+
+
+----------------------------------------------------------
+
+WSL2 설치하기
+
+1. windows 기능 켜기/끄기
+    - Linux용 Windows 하위 시스템(v)
+    - Virtual Machine Platform(v)
+
+2. $ wsl --update
+
+3. 리눅스 배포판 설치하기
+    - MS Store
+
+4. 실행
+    - 프로그램 > WSL
+    - cmd > wsl
+    - 터미널 > + 새로 추가 > Ubuntu 선택
+
+    $ ubuntu2404.exe config --default-user ubuntu
+
+    $ wsl -l -v
+
+
+
+WSL2 완전 삭제하기
+
+- $ wsl -l -v
+
+- $ wsl --unregister Ubuntu-24.04
+
+
+리눅스 파일 시스템 구조
+- 리눅에서 디렉토리 구조를 파일 시스템 구조
+
+- /home: 사용자(계정) 폴더
+- /etc: 시스템 설정. 잘못 건드리면 시스템 불안정;;
+- /usr: Unix System Resources. 애플리케이션이나 라이브러리 등을 관리
+        (톰캣, JDK 등). 사용자가 직접 설치하는 경우
+- /opt: Optional. 애플리케이션이나 라이브러리 등을 관리. 대형 소프트웨어나 상용 프로그램 설치용
+- /root: 관리자(root) 계정의 홈 디렉토리
+- /var: Variable. 가변 데이터. 로그, 메일, 임시 파일 등을 
+                    자주 변경되는 데이터
+- /mnt: Mount. 리눅스가 외부 저장소를 연결해놓은 디렉토리
+
+
+----------------------------------------------------------
+
+
+Shell, 쉘
+- 유닉스에는 여러가지 쉘이 있다.
+
+- Bourne Shell(sh)
+    - 유닉스에 최초로 사용된 표준 쉘
+    - sh 명령어
+    - 단순하고 가볍다. 기능이 적다.
+
+- Bash(Borune Again Shell)
+    - 현재 리눅스에 가장 많이 사용하는 기본 쉘
+
+- zsh(Z Shell)
+    - bash 모든 기능 + 자동 완성, 테마, 플러그인 등 제공
+    - macOS
+
+
+
+리눅스 명령어
+
+1. pwd, Print Working Directory
+- $ pwd
+- 현재 작업 중인 디렉토리의 경로를 출력
+
+WSL2 사용 중 > 윈도우 탐색기 호출
+
+
+
+2. ls, List
+- $ ls [옵션] [경로]
+
+- 디렉토리의 파일과 폴더 목록을 출력
+- ls -l: 상세 정보까지 출력(Long)
+- ls -a: 숨긴 파일도 출력(All)
+- ls -al
+- ls -la
+
+- 출력 결과 의미
+    a. l rwx rwx rwx
+       d rwx r-x r-x
+       - rwx rwx rwx
+
+        - 첫번째 문자: 파일 유형
+            - '-': 일반 파일
+            - 'd': 디렉토리
+            - 'l': 심볼릭 링크
+
+        - 2~4번째 문자: 소유자(User) 권한
+        - 5~7번째 문자: 그룹(Group) 권한
+        - 8~10번째문자: 기타 사용자(Other) 권한
+
+    b. 소유자(Owner): 파일이나 디렉토리 소유자
+    c. 그룹(Group): 파일이나 디렉토리 소유자
+    d. 파일 크기: 파일 크기(Byte)
+    e. 수정 날짜: 마지막 수정된 날짜
+        - 6개월 이내: 월 일 시간
+        - 6개월 이상: 월 일 년도
+    f. 파일 이름: 파일이나 디렉토리 이름
+
+    
+    권한(Permission)
+    - 파일이나 디렉토리에 대해 누가 + 어떤 작업을 할 수 있는지 정책
+    - 루트(root) 사용자가 변경한다.
+    - 읽기(r, 4): 파일(내용 읽기), 폴더(내용 열람)
+    - 쓰기(w, 2): 파일(내용 수정), 폴더(새파일 생성/삭제)
+    - 실행(x, 1): 파일(실행), 폴더(접근)
+    - 읽기+쓰기 > 4 + 2 > 6
+    - 모든 권한 > 1 + 2 + 4 > 7
+
+    소유자
+    - 해당 파일/디렉토리를 생성한 사용자
+
+    그룹
+    - 여러 사용자를 하나로 묶어 놓은 단위
+    - 여러 사용자에 대한 권한을 제어하는 용도
+
+
+
+3. chmod, Change Mode
+- $ chmod [권한] [파일명]
+- 파일이나 디렉토리의 권한을 변경하는 명령어
+
+-rw-r--r-- 1 ubuntu ubuntu 6 Oct 30 14:25 test.txt
+
+- rw- r-- r--
+> 소유자(rw-)
+> 그룹(r--)
+> 기타(r--)
+
+- $ chmod u+x file.exe
+
+
+
+vi, visual editor
+- 명령 모드: 커서 이동, 삭제, 복사 등.. 명령을 입력
+- 입력 모드: 텍스트를 입력
+- 명령행 모드
+
+- 명령 모드 - i -> 입력 모드
+- 입력 모드 - esc -> 명령 모드
+- 명령 모드 - : > 명령행 모드 
+
+- 명령 모드 단축키
+    - dd: 줄 삭제
+    - u: 명령 취소 
+    - D: 커서 위치로부터 행의 끝까지 삭제
+    - yy: 줄 복사
+    - p: 붙여넣기
+
+- 명령행 모드
+    - :q > 프로그램 종료(quit)
+    - :w > 저장(write)
+    - :w aaa.txt
+    - :wq
+    - :q! > 저장없이 종료
+    - :%s/찾을문자열/바꿀문자열/g
+
+----------------------------------------------------------------------------------
+
+4. mkdir, Make Directory
+- $ mkdir [옵션] [디렉토리명]
+- 디렉토리 생성
+- 생성된 디렉토리는 명령을 실행한 사용자 소유자
+- $ mkdir aaa
+- $ mkdir -p aaa/bbb/ccc # -parents
+
+5. cd, Change Directory
+- $ cd [디렉토리 경로]
+- $ cd 폴더명       # 자식 폴더로 이동
+- $ cd ..           # 부모 폴더
+- $ cd /            # 루트 폴더
+- $ cd ~            # 홈 디렉토리
+- $ cd              # 홈 디렉토리
+- $ cd -            # 이전 폴더로 이동
+
+
+6. touch
+- $ touch [파일명]
+- 빈 파일을 생성하는 명령어
+- $ touch bbb.txt
+- $ touch bbb.txt ddd.txt eee.txt
+
+7. rm, Remove
+- $ rm [옵션] [파일or디렉토리]
+- $ rmdir [디렉토리]
+- 파일이나 디렉토리를 삭제
+- 디렉토리는 내용물이 있으면 삭제 불가
+- 파일 삭제를 하려면 > 디렉토리에 쓰기(w) 권한이 있어야 한다.
+
+- $ rm aaa.txt
+- $ rm -R aaa       #directory
+- $ rm -f aaa.txt   #force
+- $ rm -rf aaa      #directory-force
+
+8. mv, Move
+- $ mv [옵션] [원본] [대상]
+- 파일이나 디렉토리의 이동 or 이름변경
+
+- $ mv -f test.txt ./aaa/test.txt       #같은 파일이 있을경우 f옵션을 주면 강제로 덮어쓰기!!
+- $ mv -i test.txt ./aaa/test.txt       #같은 파일이 있을경우 i옵션을 주면 물어보고 덮어쓰기!!
+
+9. cp,Copy
+- $ cp [옵션] [원본] [대상]
+- 파일이나 디렉토리를 복사
+- $ cp -R: 하위 구조까지 복사
+
+실행 > shell:startup > 컴퓨터 시작할때 켤 애들
+
+vi > 붙여넣기 : shift + insert
+
+10. man, Manual
+- $ man [명령어]      -도움말
+
+11. echo
+- 텍스트를 터미널에 출력하는 기본 명렁어
+- $ echo "안녕하세요" > hello.txt   #덮어쓰기
+- $ echo "안녕히가세요" >> hello.txt #이어쓰기(append)
+- $ echo -e "하나\n둘\n셋" >> hello.txt #엔터 넣기
+
+12. cat, Concatenate
+- $ cat [옵션] [파일명]
+- 파일을 내용을 화면에 출력 or 새 파일을 생성
+- 여러 파일을 연결한 후 출력 or 새 파일을 생성
+- cat [파일명] > [파일명]  #덮어쓰기
+- cat [파일명] >> [파일명] #이어쓰기
+
+# 리눅스는 |(파이프)를 사용해서 앞의 명령어에서 뒤의 명령어로 데이터를 전달할 수 있다.
+
+- $ cat news.txt | more    //서버에서 xml파일같은거 연결해서 바로 수정해야할때 길면 가독성이 안좋아져서 사용해서 수정함
+- Enter :한줄씩 아래로
+- Space bar : 한페이지씩 아래로
+
+13. head
+- $ head [옵션] [파일명]
+- 파일의 앞부분을 출력하는 명령어
+
+14. tail
+- $ tail [옵션] [파일명]
+- 파일의 뒷부분을 출력하는 명령어
+- 로그 볼 때 많이 쌓여있기 때문에 가장 마지막 줄만 확인 할 때 사용
+- $ tail -f [파일명]    #trace 기능. 주로 로그 확인용
+
+15. grep, Global Regular Expression Print
+- $ grep [옵션] [패턴] [파일명]
+- 특정 문자열이 들어있는 파일을 찾을 때 사용
+
+- $ grep "검색어" 대상파일
+- $ grep -n "검색어" 대상파일       #찾은 줄 n행 출력
+- $ grep "검색어" *.txt             #현재 디렉토리내의 모든 텍스트 파일 대상
+- $ grep -r "검색어" *.txt          #현재 + 자식 디렉터리
+         -i                         #덜민감한(대소문자 상관없음)   
+- $ grep -r "검색어" /              #시스템 전체 검색(비추)
+
+
+명령 종료 방법 > ctrl + c
+
+16. which
+- $ which [명령어]
+- 명령어의 실행 파일 위치를 찾는 명렁어
+
+17. top
+- $ top
+- 실행 중인 프로세스의 상태를 실시간 출력
+
+18. w : 사용자식별용(자세함)
+
+19. who : 사용자식별용(덜자세함)
+
+20. ping
+- $ ping [옵션] [호스트명 or IP]
+- 네트워크 연결 상태를 확인
+
+21. nslookup, Name Server Lookup -도메인: 아이피주소 조회할 때 종종 씀
+- $ nslookup
+
+- $ nslookup google.com
+
+22. ifconfig  (<--- ip addr 구형) / 최신
+- 현재 호스트에 할당 된 ip 조회
+
+23. ps, Process Status
+- $ ps -ef          # 모든 프로세스 출력하는 
+- $ ps -ef | grep apache
+
+24. kill
+- $ kill -9 360
+
+25. reboot
+- 재부팅
+
+26. halt
+- 종류
+- 관리자 권한(root)이 필요
+
+27. sudo, superuser do
+- 일시적으로 관리자 획득 (현재 명령어에 한해서)
+
+------------------------------------------------------------------------------------
+
+패키지(프로그램) 설치 명령어
+- *.deb 패키지를 설치하는 도구들
+    - dpkg, Debian Package          #구구형
+    - apt-get                       #구형
+    - apt, Advanced Package Tool    #신형
+- *.deb > 직접 다운 + 설치
+- 자동으로 다운(원격 저장소) + 설치
+    - /etc/apt/sources.list
+-*루트권한 필요**
+
+28. sudo apt update
+- $ sudo apt update
+- /etc/apt/sources.list > 갱신
+
+
+
+29. apt install 패키지명 / apt-get install 패키지명
+- $ sudo apt install vim
+- $ sudo apt -i vim
+
+-$ sudo apt install openjdk-11-jdk
+
+30. sudo apt remove
+- $ sudo apt remove 패키지명
+- 패키지만 삭제
+- 설정파일은 그대로 보관
+
+
+31. sudo apt purge
+- $ sudo apt purge 패키지명
+- 패키지 삭제
+- 설정파일도 삭제
+
+32. sudo apt autoremove
+- 더 이상 사용치 않는 패키지를 모두 삭제한다.
+- 의존성을 체크 >  더 이상 참조되지 않는 패키지를 삭제
+
+33. sudo apt clean
+- $ sudo apt clean
